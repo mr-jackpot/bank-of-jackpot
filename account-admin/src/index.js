@@ -6,5 +6,5 @@ const router = require("./router/router")
 app.use('/', router)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Application listening on port ${port}`);
 });
