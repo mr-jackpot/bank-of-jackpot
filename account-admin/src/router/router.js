@@ -15,4 +15,8 @@ router.get("/api/accounts/:id", controller.getOneAccount)
 
 router.post("/api/accounts", urlencodedParser, controller.createNewAccount)
 
+router.delete("/api/accounts/:id", controller.closeAccount)
+
+router.put("/api/accounts/:id", urlencodedParser, controller.updateAccountBalance)
+
 module.exports = router;

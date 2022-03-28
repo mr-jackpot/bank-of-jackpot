@@ -43,4 +43,30 @@ const createNewAccount = (req, res) => {
   });
 }
 
-module.exports = { getAllAccounts, getOneAccount, createNewAccount };
+const closeAccount = (req, res) => {
+    Account.findByIdAndDelete(req.params.id)
+    .then(dbProduct => {
+        res.send("Account successfully closed.")
+    })
+    .catch(err => {
+        res.json(err)
+    })
+}
+
+const updateAccountBalance = (req, res) => {
+    Account.findByIdAndUpdate(req.params.id, 
+      { 
+        account_balance: req.body.account_balance  
+      }, {new: true}) // {new: true} - returns the UPDATED document. By deafult this mongoose function will return the original.
+      .then( dbProduct => {
+        if (dbProduct !== null)
+            res.json(dbProduct)
+        if (dbProduct === null)
+            res.json(`record ID ${req.params.id} not found`)
+      })
+      .catch( err => {
+        res.json(err)
+      });
+  }
+
+module.exports = { getAllAccounts, getOneAccount, createNewAccount, closeAccount, updateAccountBalance };
