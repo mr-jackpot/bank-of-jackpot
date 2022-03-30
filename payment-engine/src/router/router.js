@@ -12,4 +12,6 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get("/api/payments", controller.serverStatus)
 
+router.post("/api/payments", urlencodedParser, controller.makePayment)
+
 module.exports = router;
