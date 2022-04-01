@@ -10,7 +10,8 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.get("/api/payments", controller.serverStatus)
+router.get("/api/payments/status", controller.serverStatus)
+router.get("/api/payments", controller.getAllPayments)
 
 router.post("/api/payments", urlencodedParser, controller.makePayment)
 
