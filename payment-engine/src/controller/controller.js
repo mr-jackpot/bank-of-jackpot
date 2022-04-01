@@ -7,37 +7,26 @@ const pool = new Pool({
   port: 5432,
 });
 
-const serverStatus = (req, res) => {
-  res.send("Server running.");
+const serverStatus = async (req, res) => {
+  const client = await pool.connect();
+  res.send("Connected!");
+  client.release();
 };
 
-const getAllPayments = (req, res) => {
-  console.log("Incoming request")
-  pool.query("SELECT * FROM event;"),
-    (error, results) => {
-      if (error) {
-        res.send(error.message);
-        throw error.message;
-      }
-      res.status(200).send(results.rows);
-    };
+const getAllPayments = async (req, res) => {
+  console.log("Incoming request");
+  const result = await pool.query("SELECT * FROM event ORDER BY id ASC;");
+  res.send(result.rows);
 };
 
-const makePayment = (req, res) => {
+const makePayment = async (req, res) => {
   const { sender, reciever, amount } = req.body;
   const date = new Date();
-
-  pool.query(
+  const result = await pool.query(
     "INSERT INTO event (sender, reciever, amount) values ($1, $2, $3);",
-    [sender, reciever, amount],
-    (error, results) => {
-      if (error) {
-        res.send(error.message);
-        throw error.message;
-      }
-      res.status(201).send(`Payment Successful.`);
-    }
+    [sender, reciever, amount]
   );
+  res.status(201).send("Payment successful!");
 };
 
 module.exports = { serverStatus, makePayment, getAllPayments };
