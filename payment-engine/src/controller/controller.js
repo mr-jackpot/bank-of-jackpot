@@ -9,7 +9,7 @@ const pool = new Pool({
 
 const serverStatus = async (req, res) => {
   const client = await pool.connect();
-  res.send("Connected!");
+  res.send("Database Connected!");
   client.release();
 };
 
@@ -23,10 +23,10 @@ const makePayment = async (req, res) => {
   const { sender, reciever, amount } = req.body;
   const date = new Date();
   const result = await pool.query(
-    "INSERT INTO event (sender, reciever, amount) values ($1, $2, $3);",
-    [sender, reciever, amount]
+    "INSERT INTO event (sender, reciever, amount, date) values ($1, $2, $3, $4);",
+    [sender, reciever, amount, date]
   );
-  res.status(201).send("Payment successful!");
+  res.status(201).send({message: "Payment successful!"});
 };
 
 module.exports = { serverStatus, makePayment, getAllPayments };
