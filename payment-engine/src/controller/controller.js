@@ -1,5 +1,5 @@
 // Move pool stuff to a file in ../models/
-const axios = require('axios').default;
+const axios = require("axios").default;
 const Pool = require("pg").Pool;
 const pool = new Pool({
   user: "payeng",
@@ -31,10 +31,32 @@ const makePayment = async (req, res) => {
       [sender, reciever, amount, date]
     );
   } catch (err) {
-      res.status(500).send({ message: err.message });
+    res.status(500).send({ message: err.message });
   }
-    axios.put('http://localhost:3000/api/accounts/' + sender, {account_balance: -amount})
-    axios.put('http://localhost:3000/api/accounts/' + reciever, {account_balance: amount})
+  
+  axios
+    .put("http://localhost:3000/api/accounts/" + sender, {
+      account_balance: -amount,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).send({ message: error.message });
+    });
+
+  axios
+    .put("http://localhost:3000/api/accounts/" + reciever, {
+      account_balance: amount,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).send({ message: error.message });
+    });
 
   res.status(201).send({ message: "Payment successful!" });
 };
