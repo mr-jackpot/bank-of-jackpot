@@ -1,3 +1,5 @@
+// Move pool stuff to a file in ../models/
+const axios = require('axios').default;
 const Pool = require("pg").Pool;
 const pool = new Pool({
   user: "payeng",
@@ -22,11 +24,19 @@ const getAllPayments = async (req, res) => {
 const makePayment = async (req, res) => {
   const { sender, reciever, amount } = req.body;
   const date = new Date();
-  const result = await pool.query(
-    "INSERT INTO event (sender, reciever, amount, date) values ($1, $2, $3, $4);",
-    [sender, reciever, amount, date]
-  );
-  res.status(201).send({message: "Payment successful!"});
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO event (sender, reciever, amount, date) values ($1, $2, $3, $4);",
+      [sender, reciever, amount, date]
+    );
+  } catch (err) {
+      res.status(500).send({ message: err.message });
+  }
+    axios.put('http://localhost:3000/api/accounts/' + sender, {account_balance: -amount})
+    axios.put('http://localhost:3000/api/accounts/' + reciever, {account_balance: amount})
+
+  res.status(201).send({ message: "Payment successful!" });
 };
 
 module.exports = { serverStatus, makePayment, getAllPayments };
