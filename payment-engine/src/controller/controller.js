@@ -16,9 +16,25 @@ const serverStatus = async (req, res) => {
 };
 
 const getAllPayments = async (req, res) => {
-  console.log("Incoming request");
   const result = await pool.query("SELECT * FROM event ORDER BY id ASC;");
   res.send(result.rows);
+};
+
+const getPaymentsForCustomer = async (req, res) => {
+  customerId = req.params.id;
+  let result
+  try {
+    result = await pool.query(
+      "SELECT * FROM event\
+      WHERE sender=$1\
+      OR reciever=$1\
+      ORDER BY date DESC;",
+      [customerId]
+    );
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+  res.status(200).send(result.rows)
 };
 
 const makePayment = async (req, res) => {
@@ -33,7 +49,7 @@ const makePayment = async (req, res) => {
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
-  
+
   axios
     .put("http://localhost:3000/api/accounts/" + sender, {
       account_balance: -amount,
@@ -61,4 +77,9 @@ const makePayment = async (req, res) => {
   res.status(201).send({ message: "Payment successful!" });
 };
 
-module.exports = { serverStatus, makePayment, getAllPayments };
+module.exports = {
+  serverStatus,
+  makePayment,
+  getAllPayments,
+  getPaymentsForCustomer,
+};
