@@ -12,6 +12,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get("/api/payments/status", controller.serverStatus)
 router.get("/api/payments", controller.getAllPayments)
+router.get("/api/payments/:id", controller.getPaymentsForCustomer)
 
 router.post("/api/payments", urlencodedParser, controller.makePayment)
 
