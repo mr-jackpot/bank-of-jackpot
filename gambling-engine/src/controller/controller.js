@@ -1,30 +1,43 @@
+const axios = require('axios').default
+
 const serverStatus = (req, res) => {
   res.status(200).send({ message: "Gambling engine running!" });
 };
 
 const playRoulette = async (req, res) => {
+  const {player, bet, colour} = req.body
+  await axios.post("http://localhost:3100/api/payments", {
+    sender: player,
+    reciever: "6251bf9e9dc38baf9247c084",
+    amount: bet
+  })
   wheel = (Math.random() * (36 - 0) + 0).toFixed(0);
+  wheelColour = calculateColour(wheel);
 
-  colour = calculateColour(wheel);
-
-  if (req.body.colour == undefined) {
+  if (colour == undefined) {
     res.send({ message: "Error! Please choose a colour" });
     return;
   }
 
-  if (req.body.colour == colour) {
+  if (colour == wheelColour) {
+    money = calculateWinnings(bet, wheelColour)
+    await axios.post("http://localhost:3100/api/payments", {
+      sender: "6251bf9e9dc38baf9247c084",
+      reciever: player,
+      amount: money
+    })
     res.send({
       number: wheel,
-      colour: colour,
-      winnings: calculateWinnings(req.body.bet, colour),
+      colour: wheelColour,
+      winnings: money,
       message: "Congratulations! You won!",
     });
     return;
   }
-  if (req.body.colour != colour) {
+  if (colour != wheelColour) {
     res.send({
       number: wheel,
-      colour: colour,
+      colour: wheelColour,
       winnings: 0,
       message: "Sorry! You lost!",
     });
@@ -44,7 +57,7 @@ const calculateColour = (wheelNumber) => {
 
 const calculateWinnings = (bet, colour) => {
   if (colour == "green") {
-    return bet * 14;
+    return bet * 35;
   } else if (colour != "red" || colour != "black") {
     return bet * 2;
   }
