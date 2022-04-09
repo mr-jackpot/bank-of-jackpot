@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controller/controller")
-
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 // create application/json parser
 var jsonParser = bodyParser.json()
@@ -14,6 +13,6 @@ router.get("/api/payments/status", controller.serverStatus)
 router.get("/api/payments", controller.getAllPayments)
 router.get("/api/payments/:id", controller.getPaymentsForCustomer)
 
-router.post("/api/payments", urlencodedParser, controller.makePayment)
+router.post("/api/payments", jsonParser, controller.makePayment)
 
 module.exports = router;

@@ -17,6 +17,6 @@ router.post("/api/accounts", urlencodedParser, controller.createNewAccount)
 
 router.delete("/api/accounts/:id", controller.closeAccount)
 
-router.put("/api/accounts/:id", urlencodedParser, controller.updateAccountBalance)
+router.put("/api/accounts/:id", jsonParser, controller.updateAccountBalance)
 
 module.exports = router;

@@ -55,9 +55,9 @@ const closeAccount = (req, res) => {
 
 const updateAccountBalance = (req, res) => {
     Account.findByIdAndUpdate(req.params.id, 
-      { 
+      {$inc:{ 
         account_balance: req.body.account_balance  
-      }, {new: true}) // {new: true} - returns the UPDATED document. By deafult this mongoose function will return the original.
+      }}, {new: true}) // {new: true} - returns the UPDATED document. By deafult this mongoose function will return the original.
       .then( dbProduct => {
         if (dbProduct !== null)
             res.json(dbProduct)
