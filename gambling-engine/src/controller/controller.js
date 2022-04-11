@@ -1,4 +1,12 @@
 const axios = require('axios').default
+const Pool = require("pg").Pool;
+const pool = new Pool({
+  user: "payeng",
+  host: "localhost",
+  database: "roulette",
+  password: "admin",
+  port: 5432,
+});
 
 const serverStatus = (req, res) => {
   res.status(200).send({ message: "Gambling engine running!" });
@@ -13,6 +21,14 @@ const playRoulette = async (req, res) => {
   })
   wheel = (Math.random() * (36 - 0) + 0).toFixed(0);
   wheelColour = calculateColour(wheel);
+  try {
+    pool.query(
+      "INSERT INTO results (colour, wheel_number, datetime) values ($1, $2, $3);",
+      [wheelColour, wheel, new Date()]
+    );
+  } catch (err) {
+    console.log("DATABASE ERROR: " + err.message);
+  }
 
   if (colour == undefined) {
     res.send({ message: "Error! Please choose a colour" });
