@@ -79,4 +79,16 @@ const calculateWinnings = (bet, colour) => {
   }
 };
 
-module.exports = { serverStatus, playRoulette };
+const gameHistory = async (req, res) => {
+  result = ''
+  try {
+    result = await pool.query("SELECT * FROM results ORDER BY datetime DESC;");
+  } catch (err) {
+    res.status(500).send(err.message)
+    console.log("DATABASE ERROR: " + err.message);
+  }
+  
+  res.status(200).send(result.rows)
+}
+
+module.exports = { serverStatus, playRoulette, gameHistory };
