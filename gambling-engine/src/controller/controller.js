@@ -16,7 +16,7 @@ const playRoulette = async (req, res) => {
   const { player, bet, colour } = req.body;
   isRegistered = await isPlayerRegistered(player);
   if (isRegistered == "not found") {
-    playerSignUp(player);
+    await playerSignUp(player);
   }
   await axios.post("http://localhost:3100/api/payments", {
     sender: player,
@@ -52,6 +52,7 @@ const playRoulette = async (req, res) => {
       winnings: money,
       message: "Congratulations! You won!",
     });
+    await updatePlayerStats(player, true, money)
     return;
   }
   if (colour != wheelColour) {
@@ -61,6 +62,7 @@ const playRoulette = async (req, res) => {
       winnings: 0,
       message: "Sorry! You lost!",
     });
+    await updatePlayerStats(player, false, bet)
     return;
   }
 };
@@ -95,12 +97,38 @@ const gameHistory = async (req, res) => {
   res.status(200).send(result.rows);
 };
 
-const updatePlayerStats = async (playerId, winnings) => {
-  result = "";
+const updatePlayerStats = async (playerId, didWin, winnings) => {
+  if (didWin) {
+    try {
+      await pool.query(
+        `UPDATE players 
+        SET games = games + 1,
+            won = won + 1,
+            winnings = winnings + ${winnings}
+        WHERE account_id = '${playerId}'`
+      );
+    } catch (err) {
+      console.log("DATABASE ERROR: " + err.message);
+      return "error";
+    }
+  } else {
+    try {
+      await pool.query(
+        `UPDATE players 
+        SET games = games + 1,
+            lost = lost + 1,
+            winnings = winnings - ${winnings}
+        WHERE account_id = '${playerId}'`
+      );
+    } catch (err) {
+      console.log("DATABASE ERROR: " + err.message);
+      return "error";
+    }
+  }
 };
 
 const isPlayerRegistered = async (playerId) => {
-  result = "";
+  var result = "";
   try {
     result = await pool.query(
       `SELECT account_id FROM players WHERE account_id='${playerId}'`
@@ -119,7 +147,7 @@ const isPlayerRegistered = async (playerId) => {
 };
 
 const playerSignUp = async (playerId) => {
-  result = "";
+  var result = "";
   console.log("fire");
   try {
     result = await pool.query(
