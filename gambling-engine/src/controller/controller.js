@@ -1,4 +1,4 @@
-const axios = require('axios').default
+const axios = require("axios").default;
 const Pool = require("pg").Pool;
 const pool = new Pool({
   user: "payeng",
@@ -13,12 +13,16 @@ const serverStatus = (req, res) => {
 };
 
 const playRoulette = async (req, res) => {
-  const {player, bet, colour} = req.body
+  const { player, bet, colour } = req.body;
+  isRegistered = await isPlayerRegistered(player);
+  if (isRegistered == "not found") {
+    playerSignUp(player);
+  }
   await axios.post("http://localhost:3100/api/payments", {
     sender: player,
     reciever: "6251bf9e9dc38baf9247c084",
-    amount: bet
-  })
+    amount: bet,
+  });
   wheel = (Math.random() * (36 - 0) + 0).toFixed(0);
   wheelColour = calculateColour(wheel);
   try {
@@ -36,12 +40,12 @@ const playRoulette = async (req, res) => {
   }
 
   if (colour == wheelColour) {
-    money = calculateWinnings(bet, wheelColour)
+    money = calculateWinnings(bet, wheelColour);
     await axios.post("http://localhost:3100/api/payments", {
       sender: "6251bf9e9dc38baf9247c084",
       reciever: player,
-      amount: money
-    })
+      amount: money,
+    });
     res.send({
       number: wheel,
       colour: wheelColour,
@@ -80,15 +84,51 @@ const calculateWinnings = (bet, colour) => {
 };
 
 const gameHistory = async (req, res) => {
-  result = ''
+  result = "";
   try {
     result = await pool.query("SELECT * FROM results ORDER BY datetime DESC;");
   } catch (err) {
-    res.status(500).send(err.message)
+    res.status(500).send(err.message);
     console.log("DATABASE ERROR: " + err.message);
   }
-  
-  res.status(200).send(result.rows)
-}
+
+  res.status(200).send(result.rows);
+};
+
+const updatePlayerStats = async (playerId, winnings) => {
+  result = "";
+};
+
+const isPlayerRegistered = async (playerId) => {
+  result = "";
+  try {
+    result = await pool.query(
+      `SELECT account_id FROM players WHERE account_id='${playerId}'`
+    );
+  } catch (err) {
+    console.log("DATABASE ERROR: " + err.message);
+    return "error";
+  }
+  if (result.rows.length === 0) {
+    console.log("Player not found.");
+    return "not found";
+  } else {
+    console.log("Player found.");
+    return "found";
+  }
+};
+
+const playerSignUp = async (playerId) => {
+  result = "";
+  console.log("fire");
+  try {
+    result = await pool.query(
+      "INSERT INTO players (account_id, games, won, lost, winnings) values ($1, 0, 0, 0, 0);",
+      [playerId]
+    );
+  } catch (err) {
+    console.log("DATABASE ERROR: " + err.message);
+  }
+};
 
 module.exports = { serverStatus, playRoulette, gameHistory };
