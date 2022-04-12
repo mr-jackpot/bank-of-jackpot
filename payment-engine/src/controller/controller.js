@@ -39,11 +39,10 @@ const getPaymentsForCustomer = async (req, res) => {
 
 const makePayment = async (req, res) => {
   const { sender, reciever, amount } = req.body;
-  const date = new Date();
   try {
     const result = await pool.query(
       "INSERT INTO event (sender, reciever, amount, date) values ($1, $2, $3, $4);",
-      [sender, reciever, amount, date]
+      [sender, reciever, amount, new Date()]
     );
   } catch (err) {
     res.status(500).send({ message: err.message });
