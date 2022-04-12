@@ -12,8 +12,24 @@ const serverStatus = (req, res) => {
   res.status(200).send({ message: "Gambling engine running!" });
 };
 
+const getPlayerProfile = async (req, res) => {
+  const player = req.params.id
+  var result = '';
+  try {
+    result = await pool.query(
+      `SELECT * FROM players WHERE account_id='${player}'`
+    );
+  } catch (err) {
+    res.status(500).send(err.message)
+    console.log("DATABASE ERROR: " + err);
+  }
+
+  res.status(200).send(result.rows)
+}
+
 const playRoulette = async (req, res) => {
   const { player, bet, colour } = req.body;
+  var wheelColour;
   isRegistered = await isPlayerRegistered(player);
   if (isRegistered == "not found") {
     await playerSignUp(player);
@@ -159,4 +175,4 @@ const playerSignUp = async (playerId) => {
   }
 };
 
-module.exports = { serverStatus, playRoulette, gameHistory };
+module.exports = { serverStatus, playRoulette, gameHistory, getPlayerProfile };
