@@ -10,6 +10,11 @@ function AccountManager() {
     const [dob, setDob] = useState(new Date())
     const [address, setAddress] = useState("Loading...")
 
+    var gbpFormatter = new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+    })
+
     useEffect(() => {
       axios.get('http://localhost:3300/api/accounts/624211bf6bff41b4e09691f4')
       .then(res => {
@@ -26,7 +31,7 @@ function AccountManager() {
       <div>
           <h3>Account Details</h3>
           <p>Account ID: {accountId}</p>
-          <p>Account Balance: £{balance}</p>
+          <p>Account Balance: {gbpFormatter.format(balance)}</p>
 
           <h3>Customer Details</h3>
           <p>Name: {name}</p>
@@ -34,7 +39,7 @@ function AccountManager() {
           <p>Address: {address}</p>
 
           <h3>Account Statement</h3>
-          <BankStatement id={accountId}/>
+          <BankStatement id={accountId} />
       </div>
     </div>
     );
