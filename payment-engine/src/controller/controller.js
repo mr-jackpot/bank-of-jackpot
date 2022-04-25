@@ -49,7 +49,7 @@ const makePayment = async (req, res) => {
   }
 
   axios
-    .put("http://localhost:3000/api/accounts/" + sender, {
+    .put("http://localhost:3300/api/accounts/" + sender, {
       account_balance: -amount,
     })
     .then(function (response) {
@@ -61,7 +61,7 @@ const makePayment = async (req, res) => {
     });
 
   axios
-    .put("http://localhost:3000/api/accounts/" + reciever, {
+    .put("http://localhost:3300/api/accounts/" + reciever, {
       account_balance: amount,
     })
     .then(function (response) {
