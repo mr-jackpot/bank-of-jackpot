@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BankStatement from "../../components/BankStatement";
+import { useNavigate } from "react-router";
 
 function AccountManager() {
     
@@ -26,9 +27,15 @@ function AccountManager() {
       })
     })
 
+    const navigate = useNavigate()
+    const handleClick = () => {
+        navigate("/")
+    }
+
     return (
     <div>
       <div>
+          <button onClick={handleClick} type="button">Go back</button>
           <h3>Account Details</h3>
           <p>Account ID: {accountId}</p>
           <p>Account Balance: {gbpFormatter.format(balance)}</p>
