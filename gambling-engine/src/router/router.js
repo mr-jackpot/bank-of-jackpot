@@ -11,7 +11,7 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get("/api/gambling/status", controller.serverStatus)
-router.get("/api/gambling/roulette", jsonParser, controller.playRoulette)
+router.post("/api/gambling/roulette", jsonParser, controller.playRoulette)
 router.get("/api/gambling/roulette/history", jsonParser, controller.gameHistory)
 router.get("/api/gambling/roulette/player/:id", controller.getPlayerProfile)
 
