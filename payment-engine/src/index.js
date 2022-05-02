@@ -3,6 +3,7 @@ const app = express();
 const port = 3100;
 const router = require("./router/router")
 const cors = require("cors")
+require('dotenv').config()
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
