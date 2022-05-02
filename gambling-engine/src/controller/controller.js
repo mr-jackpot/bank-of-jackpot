@@ -1,11 +1,12 @@
+require('dotenv').config()
 const axios = require("axios").default;
 const Pool = require("pg").Pool;
 const pool = new Pool({
-  user: "payeng",
-  host: "localhost",
-  database: "roulette",
-  password: "admin",
-  port: 5432,
+  user: process.env.SQL_DB_USER,
+  host: process.env.SQL_DB_HOST,
+  database: process.env.ROULETTE_DB_NAME,
+  password: process.env.SQL_DB_PASSWD,
+  port: process.env.SQL_DB_PORT,
 });
 
 const serverStatus = (req, res) => {
