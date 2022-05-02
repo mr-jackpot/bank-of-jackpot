@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
 const Account = require('../models/account')
+require('dotenv').config()
 
-const db =
-  "mongodb+srv://mongo:mongo@customer-database.swf3y.mongodb.net/customerdb?retryWrites=true&w=majority";
-mongoose.connect(db, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGO_CONN, { useNewUrlParser: true });
 
 const getAllAccounts = (req, res) => {
     Account.find().sort({name: 'desc'})
