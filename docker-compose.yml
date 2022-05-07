@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  frontend:
+    image: "mr-jackpot/bank-frontend:1.0.0"
+    ports:
+      - "3000:3000"
+  account-admin:
+    image: "mr-jackpot/account-admin:1.1.0"
+    ports:
+      - "3300:3300"
+  payment-engine:
+    image: "mr-jackpot/payment-engine:1.1.0"
+    ports:
+      - "3100:3100"
+  gambling-engine:
+    image: "mr-jackpot/gambling-engine:1.1.0"
+    ports:
+      - "3200:3200"
