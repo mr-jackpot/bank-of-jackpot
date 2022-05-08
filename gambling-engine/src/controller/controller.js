@@ -35,7 +35,7 @@ const playRoulette = async (req, res) => {
   if (isRegistered == "not found") {
     await playerSignUp(player);
   }
-  await axios.post("http://localhost:3100/api/payments", {
+  await axios.post("http://payment-engine:3100/api/payments", {
     sender: player,
     reciever: "6251bf9e9dc38baf9247c084",
     amount: bet,
@@ -58,7 +58,7 @@ const playRoulette = async (req, res) => {
 
   if (colour == wheelColour) {
     money = calculateWinnings(bet, wheelColour);
-    await axios.post("http://localhost:3100/api/payments", {
+    await axios.post("http://payment-engine:3100/api/payments", {
       sender: "6251bf9e9dc38baf9247c084",
       reciever: player,
       amount: money,
