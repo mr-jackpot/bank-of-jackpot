@@ -9,10 +9,10 @@ services:
     ports:
       - "3300:3300"
   payment-engine:
-    image: "mr-jackpot/payment-engine:1.1.0"
+    image: "mr-jackpot/payment-engine:1.1.1"
     ports:
       - "3100:3100"
   gambling-engine:
-    image: "mr-jackpot/gambling-engine:1.1.0"
+    image: "mr-jackpot/gambling-engine:1.1.1"
     ports:
       - "3200:3200"
