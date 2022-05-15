@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import BankStatement from "../../components/BankStatement";
 import { useNavigate } from "react-router";
+import './AccountManager.css'
 
 function AccountManager() {
     
@@ -33,21 +34,16 @@ function AccountManager() {
     }
 
     return (
-    <div>
-      <div>
-          <button onClick={handleClick} type="button">Go back</button>
-          <h3>Account Details</h3>
-          <p>Account ID: {accountId}</p>
-          <p>Account Balance: {gbpFormatter.format(balance)}</p>
-
-          <h3>Customer Details</h3>
-          <p>Name: {name}</p>
-          <p>Date Of Birth: {dob.toLocaleDateString("en-GB")}</p>
-          <p>Address: {address}</p>
-
-          <h3>Account Statement</h3>
-          <BankStatement id={accountId} />
+    <div className="accountManager">
+      <div className="headerContainer">
+          <button className="backButton" onClick={handleClick} type="button"> BACK</button>
+          <p className="title"> ACCOUNT MANAGER </p>
       </div>
+      <div className="accountDetailsContainer"> 
+        <p className="accountBalance">Balance: {gbpFormatter.format(balance)}</p>
+        <p className="accountId">Account ID: {accountId}</p>
+      </div>
+      <BankStatement id={accountId} />
     </div>
     );
   }

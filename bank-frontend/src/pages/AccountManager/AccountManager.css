@@ -1,0 +1,58 @@
+.accountManager {
+    min-height: 100vh;
+    background-color: green;
+}
+
+.headerContainer {
+    display: flex;
+    font-size: xxx-large;
+    font-family: monospace;
+    color: white;
+    font-weight: 800;
+    background-color: green;
+    justify-content: center;
+}
+
+.backButton {
+    margin-right: auto;
+    border-radius: 15px;
+    border: 0;
+    min-width: 100px;
+    font-size: x-large;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.backButton:hover {
+    background-color: darkgray;
+}
+
+.title {
+    margin-right: auto;
+}
+
+.accountDetailsContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    background-color: darkgray;
+    margin-top: 10vh;
+    margin-left: 25vw;
+    margin-right: 25vw;
+    border-radius: 20px;
+}
+
+.accountBalance {
+    font-size: xxx-large;
+    flex-basis: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-family: monospace;
+    margin: 10px
+}
+
+.accountId {
+    margin: 10px
+}

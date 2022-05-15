@@ -1,0 +1,19 @@
+.statementHistoryContainer {
+    background-color: darkgrey;
+    margin: 15vh 15vw 10vh 15vw;
+    padding: 10px;
+    border-radius: 15px;
+    font-family: monospace;
+
+}
+
+.statementRow {
+    background-color: dimgray;
+    margin-top: 15px;
+    min-height: 30px;
+    border-radius: 15px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import "./BankStatement.css"
 
 function BankStatement(props) {
   const [statementData, setStatementData] = useState([]);
@@ -34,7 +35,7 @@ function BankStatement(props) {
     var render = [];
     data.map((x) => {
       render.push(
-        <div>
+        <div className="statementRow">
           <p>
             {x.sender} {x.reciever} {x.amount} {x.date}
           </p>
@@ -48,7 +49,7 @@ function BankStatement(props) {
     loadTransactions(props.id);
   }, []);
 
-  return <div>{renderStatement(statementData)}</div>;
+  return <div className="statementHistoryContainer"> {renderStatement(statementData)} </div>;
 }
 
 export default BankStatement;
